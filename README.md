@@ -38,10 +38,10 @@ This repository contains Terraform automation to deploy an Azure DevTest Lab env
 
        ```hcl
        passwords = {
-          chris = "W3lcome!"
-          fidel = "W3lcome!"
-          kevin = "W3lcome!"
-          miles = "W3lcome!"
+          chris = "########"
+          fidel = "########"
+          kevin = "########"
+          miles = "########"
        }
        ```
 
@@ -76,7 +76,7 @@ This repository contains Terraform automation to deploy an Azure DevTest Lab env
    - After deployment, run the provided script to assign the `Virtual Machine User Login` role to the `AIDevs` Entra group:
 
      ```powershell
-   .\assign-entra-role.ps1 -SubscriptionId "<subscription-id>" -ResourceGroup "<resource-group-name>" -LabName "GenAIOps-DevLab" -GroupName "AIDevs"
+   .\assign-entra-role.ps1 -SubscriptionId "36c11ed9-4547-4bf6-aaf8-902703c98b46" -ResourceGroupName "AI-Playground"
      ```
    - This allows all members of the `AIDevs` group to log in to the VMs using their Entra credentials via RDP.
 
@@ -101,7 +101,7 @@ terraform destroy
 - Optional: supply passwords via environment instead of a file:
 
    ```powershell
-   $env:TF_VAR_passwords = '{ chris = "W3lcome!", fidel = "W3lcome!", kevin = "W3lcome!", miles = "W3lcome!" }'
+   $env:TF_VAR_passwords = '{ chris = "#######", fidel = "#######", kevin = "#######", miles = "#######" }'
    terraform plan -out tfplan
    ```
 

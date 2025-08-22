@@ -1,18 +1,20 @@
-# Assign the "Virtual Machine User Login" role to the AIDevs Entra ID group at the resource group level
-# Usage: .\assign-entra-role.ps1 <subscription-id> <resource-group-name>
+# Assign the "Virtual Machine User Login" role to an Entra ID group at the resource group level
+# Usage: .\assign-entra-role.ps1 -SubscriptionId <subscription-id> -ResourceGroupName <resource-group-name> -GroupName <group-name>
 
 param(
     [Parameter(Mandatory=$true)][string]$SubscriptionId,
-    [Parameter(Mandatory=$true)][string]$ResourceGroupName
+    [Parameter(Mandatory=$true)][string]$ResourceGroupName,
+    [Parameter(Mandatory=$false)][string]$GroupName = "AIDevs"
 )
-
-$groupName = "AIDevs"
 $roleName = "Virtual Machine User Login"
 
 # Get the object ID of the Entra ID group
-$group = az ad group show --group $groupName --query objectId -o tsv
+Write-Host "Looking for Entra ID group: $GroupName"
+$group = az ad group show --group $GroupName --query id -o tsv 2>$null
 if (-not $group) {
-    Write-Error "Could not find Entra ID group: $groupName"
+    Write-Host "Could not find Entra ID group: $GroupName" -ForegroundColor Red
+    Write-Host "Available groups:" -ForegroundColor Yellow
+    az ad group list --query "[].{displayName:displayName, id:id}" --output table
     exit 1
 }
 
