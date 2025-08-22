@@ -1,0 +1,21 @@
+[
+  {
+    "artifactId": "/subscriptions/36c11ed9-4547-4bf6-aaf8-902703c98b46/resourceGroups/AI-Playground/providers/Microsoft.DevTestLab/labs/GenAIOps-DevLab/artifactSources/public repo/artifacts/windows-chocolatey",
+    "parameters": [
+      { "name": "packages", "value": "git,azure-cli,gh,postman,microsoftazurestorageexplorer,nodejs-lts,python3,vscode" },
+      { "name": "allowEmptyChecksums", "value": "true" },
+      { "name": "ignoreChecksums", "value": "false" }
+    ]
+  },
+  {
+    "artifactId": "/subscriptions/36c11ed9-4547-4bf6-aaf8-902703c98b46/resourceGroups/AI-Playground/providers/Microsoft.DevTestLab/labs/GenAIOps-DevLab/artifactSources/public repo/artifacts/windows-run-powershell",
+    "parameters": [
+      {
+        "name": "scriptUri",
+        "value": "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/quickstarts/microsoft.compute/vm-aad-login/scripts/Enable-AADLoginForWindowsVM.ps1"
+      },
+      { "name": "scriptArguments", "value": "" },
+      { "name": "runAsAdministrator", "value": "true" }
+    ]
+  }
+]
