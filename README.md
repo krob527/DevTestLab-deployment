@@ -31,9 +31,22 @@ This repository contains Terraform automation to deploy an Azure DevTest Lab env
    az extension add -n devtest-labs
    ```
 
-3. **Edit `variables.tf` as needed**
-   - Update the `developers` map to add/remove users and set VM sizes, usernames, and passwords.
-   - Adjust other variables (location, allowed VM sizes, etc.) as needed.
+3. **Configure variables (Option 1: gitignored tfvars – recommended)**
+    - Keep real passwords out of source control. This repo ignores `*.tfvars` and `*.auto.tfvars` by default.
+    - Edit `variables.tf` to set non-sensitive defaults (e.g., developers’ sizes and usernames). Do not put passwords here.
+    - Create a local `secrets.auto.tfvars` file (not committed) with sensitive values:
+
+       ```hcl
+       passwords = {
+          chris = "W3lcome!"
+          fidel = "W3lcome!"
+          kevin = "W3lcome!"
+          miles = "W3lcome!"
+       }
+       ```
+
+    - Ensure the developer keys match the `developers` map in `variables.tf`.
+    - Alternative: use `secrets.auto.tfvars.json` with equivalent JSON.
 
 4. **Initialize Terraform**
 
@@ -63,7 +76,7 @@ This repository contains Terraform automation to deploy an Azure DevTest Lab env
    - After deployment, run the provided script to assign the `Virtual Machine User Login` role to the `AIDevs` Entra group:
 
      ```powershell
-     .\assign-entra-role.ps1 <subscription-id> <resource-group-name>
+   .\assign-entra-role.ps1 -SubscriptionId "<subscription-id>" -ResourceGroup "<resource-group-name>" -LabName "GenAIOps-DevLab" -GroupName "AIDevs"
      ```
    - This allows all members of the `AIDevs` group to log in to the VMs using their Entra credentials via RDP.
 
@@ -81,6 +94,16 @@ To destroy all resources created by this automation:
 ```powershell
 terraform destroy
 ```
+
+## Notes on secrets handling
+- `variables.tf` defines a sensitive `passwords` map with no default. Supply it via a local tfvars file or environment variables.
+- This repo’s `.gitignore` excludes `*.tfvars`, `*.auto.tfvars`, `.terraform/`, `*.tfstate*`, and `tfplan`.
+- Optional: supply passwords via environment instead of a file:
+
+   ```powershell
+   $env:TF_VAR_passwords = '{ chris = "W3lcome!", fidel = "W3lcome!", kevin = "W3lcome!", miles = "W3lcome!" }'
+   terraform plan -out tfplan
+   ```
 
 ## References
 - [Azure DevTest Labs Terraform Provider](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/dev_test_lab)

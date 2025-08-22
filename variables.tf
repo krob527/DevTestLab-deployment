@@ -21,12 +21,21 @@ variable "developers" {
   type = map(object({
     size     = string
     username = string
-    password = string
   }))
   default = {
-    alice = { size = "Standard_D4s_v5", username = "chris", password = "W3lcome!" }
-    bob   = { size = "Standard_D4s_v5", username = "bob",   password = "W3lcome!" }
+    chris = { size = "Standard_D4s_v5", username = "chris" }
+    fidel = { size = "Standard_D4s_v5", username = "fidel" }
+    kevin = { size = "Standard_D4s_v5", username = "kevin" }
+    miles = { size = "Standard_D4s_v5", username = "miles" }
+
   }
+}
+
+variable "passwords" {
+  description = "Map of VM passwords keyed by developer name"
+  type        = map(string)
+  sensitive   = true
+  # No default on purpose; supply via tfvars or environment
 }
 
 variable "allowed_sizes" {
